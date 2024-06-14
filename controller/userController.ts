@@ -1,8 +1,10 @@
 import Team from "../models/teamModel";
 
-const signupUser = async (body: any, set: any, jwt: any, auth: any) => {
+const signupTeam = async (body: any, set: any, jwt: any, auth: any) => {
   const name = body.name;
   const phone = body.phone;
+  const teamLeader = body.teamLeader;
+  const profilePic = body.profilePic;
   const password = body.password;
   // USE BCRYPT
   const salt: any = process.env.SALT;
@@ -20,9 +22,11 @@ const signupUser = async (body: any, set: any, jwt: any, auth: any) => {
       name: name,
       phone: phone,
       password: hashedPassword,
+      teamLeader: teamLeader,
+      profilePic: profilePic,
     });
     await createTeam.save();
-    const pic = await createTeam.profilePic;
+    const pic = createTeam.profilePic;
     set.status = 201;
     if (createTeam) {
       auth.secrets = jwt;
@@ -40,8 +44,41 @@ const signupUser = async (body: any, set: any, jwt: any, auth: any) => {
     }
   } catch (error: any) {
     set.status = 500;
+
     return error.message;
   }
 };
-
-export { signupUser };
+const loginTeam = async (jwt: any, body: any, set: any, auth: any) => {
+  const phone = body.phone;
+  const password = body.password;
+  try {
+    const team = await Team.findOne({ phone });
+    const hash: any = team?.password;
+    const isMatch = await Bun.password.verify(password, hash || "");
+    if (!team || !isMatch) {
+      set.status = 400;
+      return "Invalid username or password";
+    }
+    auth.set({
+      value: await jwt.sign(team.id),
+      httpOnly: true,
+      maxAge: 15 * 24 * 60 * 60,
+      sameSite: "strict",
+      path: "/",
+    });
+    return {
+      message: "Logged in successfully",
+      id: team._id,
+      name: team.name,
+      phone: team.phone,
+      profilePic: team.profilePic,
+      teamLeader: team.teamLeader,
+      teamMembers: team.teamMembers,
+    };
+    set.status = 200;
+  } catch (error: any) {
+    set.status = 500;
+    return error.message;
+  }
+};
+export { signupTeam, loginTeam };

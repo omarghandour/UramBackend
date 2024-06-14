@@ -11,13 +11,13 @@ const teamSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    profilePic: {
-      type: String,
-    },
     password: {
       type: String,
       required: true,
       minLength: 6,
+    },
+    profilePic: {
+      type: String,
     },
     teamLeader: {
       type: String,
@@ -25,7 +25,6 @@ const teamSchema = new mongoose.Schema(
     },
     teamMembers: {
       type: [String],
-      required: true,
     },
   },
   {
