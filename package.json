@@ -8,8 +8,10 @@
   "dependencies": {
     "@elysiajs/cors": "^1.0.2",
     "@elysiajs/jwt": "^1.0.2",
+    "appwrite": "^15.0.0",
     "elysia": "latest",
-    "mongoose": "^8.4.1"
+    "mongoose": "^8.4.1",
+    "node-appwrite": "^13.0.0"
   },
   "devDependencies": {
     "bun-types": "latest"

@@ -1,6 +1,31 @@
 import Team from "../models/teamModel";
+import { Client, Account, ID } from "appwrite";
+const endPoint: any = process.env.APPWRITEENDPOINT;
+const pID: any = process.env.APPWRITEPID;
+const client = new Client().setEndpoint(endPoint).setProject(pID);
 
 const signupTeam = async (body: any, set: any, jwt: any, auth: any) => {
+  const phone = body.phone;
+
+  try {
+    const user = await Team.findOne({ phone });
+    if (user) {
+      set.status = 400;
+      return "User already exists";
+    }
+    //  app write
+    const account = new Account(client);
+
+    const token = await account.createPhoneToken(ID.unique(), phone);
+    set.status = 200;
+    return token;
+  } catch (error: any) {
+    set.status = 500;
+
+    return error.message;
+  }
+};
+const verifyPhone = async (body: any, set: any, jwt: any, auth: any) => {
   const name = body.name;
   const phone = body.phone;
   const teamLeader = body.teamLeader;
@@ -12,39 +37,41 @@ const signupTeam = async (body: any, set: any, jwt: any, auth: any) => {
     algorithm: "bcrypt",
     cost: +salt, // number between 4-31
   });
+  const userId = body.userId;
+  const secret = body.secret;
+  const account = new Account(client);
+
   try {
-    const user = await Team.findOne({ phone });
-    if (user) {
-      set.status = 400;
-      return "User already exists";
-    }
-    const createTeam = await Team.create({
-      name: name,
-      phone: phone,
-      password: hashedPassword,
-      teamLeader: teamLeader,
-      profilePic: profilePic,
-    });
-    await createTeam.save();
-    const pic = createTeam.profilePic;
-    set.status = 201;
-    if (createTeam) {
-      auth.secrets = jwt;
-      auth.value = createTeam.id;
-      auth.httpOnly = true;
-      auth.maxAge = 15 * 24 * 60 * 60;
-      auth.sameSite = "strict";
-      return {
-        id: createTeam._id,
-        name: createTeam.name,
-        profilePic: pic,
-        teamLeader: createTeam.teamLeader,
-        teamMembers: createTeam.teamMembers,
-      };
+    const session = await account.createSession(userId, secret);
+    if (session) {
+      const createTeam = await Team.create({
+        name: name,
+        phone: phone,
+        password: hashedPassword,
+        teamLeader: teamLeader,
+        profilePic: profilePic,
+      });
+      await createTeam.save();
+
+      const pic = createTeam.profilePic;
+      set.status = 201;
+      if (createTeam) {
+        auth.secrets = jwt;
+        auth.value = createTeam.id;
+        auth.httpOnly = true;
+        auth.maxAge = 15 * 24 * 60 * 60;
+        auth.sameSite = "strict";
+        return {
+          id: createTeam._id,
+          name: createTeam.name,
+          profilePic: pic,
+          teamLeader: createTeam.teamLeader,
+          teamMembers: createTeam.teamMembers,
+        };
+      }
     }
   } catch (error: any) {
     set.status = 500;
-
     return error.message;
   }
 };
@@ -81,4 +108,4 @@ const loginTeam = async (jwt: any, body: any, set: any, auth: any) => {
     return error.message;
   }
 };
-export { signupTeam, loginTeam };
+export { signupTeam, loginTeam, verifyPhone };

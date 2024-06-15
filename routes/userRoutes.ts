@@ -1,7 +1,11 @@
 import jwt from "@elysiajs/jwt";
 import { protectedRoute } from "../middleware/protectedRoute";
 import Elysia, { t } from "elysia";
-import { loginTeam, signupTeam } from "../controller/userController";
+import {
+  loginTeam,
+  signupTeam,
+  verifyPhone,
+} from "../controller/userController";
 const tokensec: any = process.env.JWT_SECRET;
 export const users = new Elysia({ prefix: "/users" })
   .use(
@@ -17,6 +21,22 @@ export const users = new Elysia({ prefix: "/users" })
       signupTeam(body, set, jwt, auth),
     {
       body: t.Object({
+        name: t.String(),
+        phone: t.String(),
+        password: t.String(),
+        teamLeader: t.String(),
+        profilePic: t.String(),
+      }),
+    }
+  )
+  .post(
+    "/verify",
+    ({ jwt, body, set, cookie: { auth } }: any) =>
+      verifyPhone(body, set, jwt, auth),
+    {
+      body: t.Object({
+        userId: t.String(),
+        secret: t.String(),
         name: t.String(),
         phone: t.String(),
         password: t.String(),
