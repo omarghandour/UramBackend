@@ -45,7 +45,6 @@ const signupTeam = async (body: any, set: any, jwt: any, auth: any) => {
         sameSite: "none",
         secure: false,
         path: "/",
-        domain: "localhost",
       });
       return {
         status: 201,
