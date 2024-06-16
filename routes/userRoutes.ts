@@ -21,11 +21,8 @@ export const users = new Elysia({ prefix: "/users" })
       signupTeam(body, set, jwt, auth),
     {
       body: t.Object({
-        name: t.String(),
         phone: t.String(),
         password: t.String(),
-        teamLeader: t.String(),
-        profilePic: t.String(),
       }),
     }
   )
@@ -37,11 +34,7 @@ export const users = new Elysia({ prefix: "/users" })
       body: t.Object({
         userId: t.String(),
         secret: t.String(),
-        name: t.String(),
         phone: t.String(),
-        password: t.String(),
-        teamLeader: t.String(),
-        profilePic: t.String(),
       }),
     }
   )

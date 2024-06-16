@@ -4,7 +4,6 @@ const teamSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
     },
     phone: {
       type: String,
@@ -14,17 +13,22 @@ const teamSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      minLength: 6,
+      minLength: 8,
     },
     profilePic: {
       type: String,
     },
     teamLeader: {
       type: String,
-      required: true,
     },
     teamMembers: {
       type: [String],
+    },
+    challengeName: {
+      type: String,
+    },
+    challengeType: {
+      type: String,
     },
   },
   {

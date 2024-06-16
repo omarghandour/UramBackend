@@ -8,12 +8,14 @@
   "dependencies": {
     "@elysiajs/cors": "^1.0.2",
     "@elysiajs/jwt": "^1.0.2",
+    "@elysiajs/swagger": "^1.0.5",
     "appwrite": "^15.0.0",
     "elysia": "latest",
     "mongoose": "^8.4.1",
     "node-appwrite": "^13.0.0"
   },
   "devDependencies": {
+    "@types/morgan": "^1.9.9",
     "bun-types": "latest"
   },
   "module": "src/index.js"
