@@ -51,7 +51,6 @@ const signupTeam = async (body: any, set: any, jwt: any, auth: any) => {
         message: "Team created successfully",
         id: createTeam._id,
         phone: createTeam.phone,
-        cookie: auth,
       };
     }
   } catch (error: any) {
