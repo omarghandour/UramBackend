@@ -2,9 +2,8 @@
   "name": "app",
   "version": "1.0.50",
   "scripts": {
-    "build:vercel": "bun start",
-    "dev": "concurrently \"bun --watch api/index.ts\" \"",
-    "start": "bun api/index.ts"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.0.2",
