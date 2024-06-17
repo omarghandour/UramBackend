@@ -49,8 +49,8 @@ export const users = new Elysia({ prefix: "/users" })
       }),
     }
   )
-  .post("/logout", ({ cookie: { auth }, set }) => {
-    auth.remove();
+  .post("/logout", ({ cookie: { Team }, set }) => {
+    Team.remove();
     set.status = 200;
     return "User logged out successfully";
   });
