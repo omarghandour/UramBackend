@@ -2,9 +2,11 @@
   "name": "app",
   "version": "1.0.50",
   "scripts": {
-    "build": "bun build src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "NODE_ENV=development bun run --watch src/index.ts",
+    "build": "NODE_ENV=production bun build src/index.ts --outdir ./out --target bun --minify",
+    "start": "NODE_ENV=production bun out/index.js",
+    "compile": "NODE_ENV=production bun build src/index.ts --target bun --minify --compile --outfile app.bun",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.0.2",
