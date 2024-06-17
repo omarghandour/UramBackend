@@ -2,11 +2,10 @@
   "name": "app",
   "version": "1.0.50",
   "scripts": {
-    "build": "tailwindcss -i ./src/styles/globals.css -o ./public/globals.css",
-    "build:vercel": "bun run build && bun scripts/transform-paths.ts",
+    "build:vercel": "bun scripts/transform-paths.ts",
     "----RUN": "",
     "dev": "concurrently \"bun --watch src/index.ts\" \"bun run build --watch\"",
-    "start": "bun run build && bun src/index.ts"
+    "start": "bun src/index.ts"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.0.2",
