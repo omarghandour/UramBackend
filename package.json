@@ -3,8 +3,7 @@
   "version": "1.0.50",
   "scripts": {
     "build:vercel": "bun scripts/transform-paths.ts",
-    "----RUN": "",
-    "dev": "concurrently \"bun --watch src/index.ts\" \"bun run build --watch\"",
+    "dev": "concurrently \"bun --watch src/index.ts\" \"",
     "start": "bun src/index.ts"
   },
   "dependencies": {
