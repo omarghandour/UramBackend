@@ -2,8 +2,9 @@
   "name": "app",
   "version": "1.0.50",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
+    "build:vercel": "bun run build && bun scripts/transform-paths.ts",
+    "dev": "concurrently \"bun --watch src/index.ts\" \"bun run build --watch\"",
+    "start": "bun run build && bun src/index.ts"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.0.2",
