@@ -3,8 +3,8 @@
   "version": "1.0.50",
   "scripts": {
     "build:vercel": "bun start",
-    "dev": "concurrently \"bun --watch src/index.ts\" \"",
-    "start": "bun src/index.ts"
+    "dev": "concurrently \"bun --watch api/index.ts\" \"",
+    "start": "bun api/index.ts"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.0.2",
