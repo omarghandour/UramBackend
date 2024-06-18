@@ -21,9 +21,25 @@ const signupTeam = async (body: any, set: any, jwt: any, auth: any) => {
       set.status = 400;
       return "Password must be at least 8 characters long";
     }
+    const hash: any = user?.password;
+
     if (user) {
-      set.status = 400;
-      return "User already exists";
+      const isMatch = await Bun.password.verify(password, hash || "");
+      if (!user || !isMatch) {
+        set.status = 400;
+        return "Invalid username or password";
+      } else {
+        return {
+          message: "Logged in successfully",
+          id: user._id,
+          name: user.name,
+          phone: user.phone,
+          profilePic: user.profilePic,
+          teamLeader: user.teamLeader,
+          teamMembers: user.teamMembers,
+        };
+        set.status = 200;
+      }
     }
     const createTeam = await Team.create({
       phone: phone,
