@@ -2,8 +2,10 @@ import jwt from "@elysiajs/jwt";
 import { protectedRoute } from "../middleware/protectedRoute";
 import Elysia, { t } from "elysia";
 import {
+  getTeam,
   loginTeam,
   signupTeam,
+  updateTeam,
   verifyPhone,
 } from "../controller/userController";
 const tokensec: any = process.env.JWT_SECRET;
@@ -53,4 +55,22 @@ export const users = new Elysia({ prefix: "/users" })
     Team.remove();
     set.status = 200;
     return "User logged out successfully";
+  })
+  .post("/getTeam", ({ body, set }) => getTeam(body, set), {
+    body: t.Object({
+      id: t.String(),
+    }),
+  })
+  .patch("/updateTeam", ({ body, set }) => updateTeam(body, set), {
+    body: t.Object({
+      id: t.String(),
+      name: t.String(),
+      password: t.String(),
+      // phone: t.String(),
+      profilePic: t.String(),
+      teamLeader: t.String(),
+      // teamMembers: t.String(),
+      challengeName: t.String(),
+      challengeType: t.String(),
+    }),
   });

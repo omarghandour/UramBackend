@@ -139,4 +139,63 @@ const loginTeam = async (jwt: any, body: any, set: any, auth: any) => {
     return error.message;
   }
 };
-export { signupTeam, loginTeam, verifyPhone };
+
+const getTeam = async (body: any, set: any) => {
+  const id = body.id;
+  try {
+    const team = await Team.findOne({ _id: id });
+    if (!team) {
+      set.status = 404;
+      return "Team not found";
+    }
+    return {
+      id: team._id,
+      name: team.name,
+      phone: team.phone,
+      profilePic: team.profilePic,
+      teamLeader: team.teamLeader,
+      teamMembers: team.teamMembers,
+    };
+    set.status = 200;
+  } catch (error: any) {
+    set.status = 500;
+    return error.message;
+  }
+};
+
+const updateTeam = async (body: any, set: any) => {
+  const id = body.id;
+  const name = body.name;
+  const profilePic = body.profilePic;
+  const teamLeader = body.teamLeader;
+  // const teamMembers = body.teamMembers;
+  const password = body.password;
+  const challengeName = body.challengeName;
+  const challengeType = body.challengeType;
+  const salt: any = process.env.SALT;
+  const hashedPassword = await Bun.password.hash(password, {
+    algorithm: "bcrypt",
+    cost: +salt, // number between 4-31
+  });
+  try {
+    const team = await Team.findOne({ _id: id });
+    if (!team) {
+      set.status = 404;
+      return "Team not found";
+    }
+    team.name = name;
+    team.profilePic = profilePic;
+    team.teamLeader = teamLeader;
+    team.password = hashedPassword;
+    // team.teamMembers = teamMembers;
+    team.challengeName = challengeName;
+    team.challengeType = challengeType;
+    await team.save();
+    set.status = 200;
+    return "Team updated successfully";
+  } catch (error: any) {
+    set.status = 500;
+    return error.message;
+  }
+};
+export { signupTeam, loginTeam, verifyPhone, getTeam, updateTeam };
