@@ -3,6 +3,7 @@ import connectDB from "../db/connectDB";
 import cors from "@elysiajs/cors";
 import { users } from "../routes/userRoutes";
 import swagger from "@elysiajs/swagger";
+import { Admin } from "../routes/adminRoutes";
 
 const app = new Elysia()
   .get("/", () => "Hello Elysia")
@@ -13,6 +14,7 @@ const app = new Elysia()
     })
   )
   .use(users)
+  .use(Admin)
 
   .listen(3000);
 connectDB();

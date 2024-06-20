@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
-const adminSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
     },
-    username: {
+    phone: {
       type: String,
       required: true,
       unique: true,
@@ -16,10 +16,15 @@ const adminSchema = new mongoose.Schema(
       required: true,
       minLength: 6,
     },
+    role: {
+      type: String,
+      enum: ["admin", "judge"],
+      default: "judge",
+    },
   },
   {
     timestamps: true,
   }
 );
-const Admin = mongoose.model("Team", adminSchema);
-export default Admin;
+const User = mongoose.model("User", userSchema);
+export default User;

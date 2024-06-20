@@ -24,11 +24,17 @@ const teamSchema = new mongoose.Schema(
     teamMembers: {
       type: [String],
     },
-    challengeName: {
-      type: String,
-    },
-    challengeType: {
-      type: String,
+    challenge: {
+      Name: {
+        type: String,
+      },
+      Type: {
+        type: String,
+      },
+      score: {
+        type: Number,
+        default: 0,
+      },
     },
   },
   {

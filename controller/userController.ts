@@ -170,8 +170,13 @@ const updateTeam = async (body: any, set: any) => {
   const teamLeader = body.teamLeader;
   // const teamMembers = body.teamMembers;
   const password = body.password;
-  const challengeName = body.challengeName;
-  const challengeType = body.challengeType;
+  // const challengeName = body.challengeName;
+  // const challengeType = body.challengeType;
+  const challenge = {
+    Name: "",
+    Type: "",
+    score: 1,
+  };
   const salt: any = process.env.SALT;
   const hashedPassword = await Bun.password.hash(password, {
     algorithm: "bcrypt",
@@ -188,8 +193,8 @@ const updateTeam = async (body: any, set: any) => {
     team.teamLeader = teamLeader;
     team.password = hashedPassword;
     // team.teamMembers = teamMembers;
-    team.challengeName = challengeName;
-    team.challengeType = challengeType;
+    team.challenge = challenge;
+    // team.challengeType = challengeType;
     await team.save();
     set.status = 200;
     return "Team updated successfully";
