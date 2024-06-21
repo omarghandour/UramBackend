@@ -69,8 +69,8 @@ export const users = new Elysia({ prefix: "/users" })
       // phone: t.String(),
       profilePic: t.String(),
       teamLeader: t.String(),
-      // teamMembers: t.String(),
-      challengeName: t.String(),
-      challengeType: t.String(),
+      teamMembers: t.Array(t.String()),
+      // challengeName: t.String(),
+      // challengeType: t.String(),
     }),
   });

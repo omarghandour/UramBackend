@@ -1,22 +1,29 @@
 import User from "../models/adminModel";
+let stringValue: any;
+const adminCheck = async (jwt: any, set: any, admin: any) => {
+  const cookieadmin = await admin.value;
 
-const adminCheck = async (jwt: any, set: any, auth: any) => {
-  const a0uth = await auth.value;
-  const cookieUID = await jwt.verify(auth.value);
-
-  let stringValue: any = "";
-  for (const key in cookieUID) {
-    if (Object.prototype.hasOwnProperty.call(cookieUID, key) && key !== "exp") {
-      stringValue += cookieUID[key];
-    }
-  }
-  if (stringValue === "") {
-    set.status = 401;
-    return { message: "Unauthorized", status: 401 };
-  }
   try {
-    const user = await User.findOne({ stringValue });
-    if (!user) {
+    if (cookieadmin === undefined || cookieadmin === null) {
+      set.status = 401;
+      return { message: "Unauthorized", status: 401 };
+    }
+
+    const cookieUID = await jwt.verify(cookieadmin);
+
+    for (const key in cookieUID.id) {
+      if (
+        Object.prototype.hasOwnProperty.call(cookieUID, key) &&
+        key !== "exp"
+      ) {
+        stringValue += cookieUID[key];
+      }
+    }
+
+    const user = await User.findOne({ id: stringValue });
+    console.log(user);
+
+    if (!user || user.role === "judge") {
       set.status = 401;
       return { message: "Unauthorized", status: 401 };
     }

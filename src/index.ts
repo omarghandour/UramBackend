@@ -4,6 +4,7 @@ import cors from "@elysiajs/cors";
 import { users } from "../routes/userRoutes";
 import swagger from "@elysiajs/swagger";
 import { Admin } from "../routes/adminRoutes";
+import { Challenge } from "../routes/challengeRoutes";
 
 const app = new Elysia()
   .get("/", () => "Hello Elysia")
@@ -15,6 +16,7 @@ const app = new Elysia()
   )
   .use(users)
   .use(Admin)
+  .use(Challenge)
 
   .listen(3000);
 connectDB();

@@ -24,18 +24,20 @@ const teamSchema = new mongoose.Schema(
     teamMembers: {
       type: [String],
     },
-    challenge: {
-      Name: {
-        type: String,
-      },
-      Type: {
-        type: String,
-      },
-      score: {
-        type: Number,
-        default: 0,
-      },
-    },
+    challenge: { type: mongoose.Schema.Types.ObjectId, ref: "Challenge" },
+    ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Rating" }],
+    // challenge: {
+    //   Name: {
+    //     type: String,
+    //   },
+    //   Type: {
+    //     type: String,
+    //   },
+    //   score: {
+    //     type: Number,
+    //     default: 0,
+    //   },
+    // },
   },
   {
     timestamps: true,
