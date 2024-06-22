@@ -1,5 +1,5 @@
 import User from "../models/adminModel";
-let stringValue: any;
+// let stringValue: any;
 const adminCheck = async (jwt: any, set: any, admin: any) => {
   const cookieadmin = await admin.value;
 
@@ -10,36 +10,22 @@ const adminCheck = async (jwt: any, set: any, admin: any) => {
     }
 
     const cookieUID = await jwt.verify(cookieadmin);
+    const id = cookieUID.id;
 
-    for (const key in cookieUID.id) {
-      if (
-        Object.prototype.hasOwnProperty.call(cookieUID, key) &&
-        key !== "exp"
-      ) {
-        stringValue += cookieUID[key];
-      }
-    }
+    const user = await User.findById(id);
 
-    const user = await User.findOne({ id: stringValue });
-    console.log(user);
-
-    if (!user || user.role === "judge") {
+    if (!user) {
       set.status = 401;
       return { message: "Unauthorized", status: 401 };
     }
     if (user.role != "admin") {
       set.status = 401;
-      return { message: "Unauthorized", status: 401 };
+      return { message: "Unauthorized, you are not admin", status: 401 };
     }
   } catch (error: any) {
     console.log(error);
     set.status = 500;
     return error.message;
   }
-  //   const user = await User.find({ role: "admin" });
-  //   if (!user) {
-  //     set.status = 401;
-  //     return { message: "Unauthorized", status: 401 };
-  //   }
 };
 export { adminCheck };

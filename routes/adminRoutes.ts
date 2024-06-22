@@ -76,14 +76,20 @@ Admin.post(
       password: t.String(),
     }),
   }
-).post(
-  "/loginJudge",
-  ({ jwt, body, set, cookie: { admin } }: any) =>
-    loginJudge(jwt, body, set, admin),
-  {
-    body: t.Object({
-      phone: t.String(),
-      password: t.String(),
-    }),
-  }
-);
+)
+  .post(
+    "/loginJudge",
+    ({ jwt, body, set, cookie: { admin } }: any) =>
+      loginJudge(jwt, body, set, admin),
+    {
+      body: t.Object({
+        phone: t.String(),
+        password: t.String(),
+      }),
+    }
+  )
+  .post("/logout", ({ set, cookie: { admin } }) => {
+    admin.remove();
+    set.status = 200;
+    return { message: "Logged out" };
+  });

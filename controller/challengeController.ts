@@ -34,10 +34,10 @@ const updateChallenge = async (jwt: any, body: any, set: any, admin: any) => {
     challenge.name = name;
     challenge.description = description;
     challenge.save();
-    set.status = 201;
+    set.status = 200;
     return {
       message: "Challenge updated successfully",
-      status: 201,
+      status: 200,
       challenge: challenge,
     };
   } catch (error: any) {
@@ -49,10 +49,10 @@ const deleteChallenge = async (jwt: any, body: any, set: any, admin: any) => {
   const challengeId = await body.id;
   try {
     const challenge: any = await Challenge.findByIdAndDelete(challengeId);
-    set.status = 201;
+    set.status = 200;
     return {
       message: "Challenge deleted successfully",
-      status: 201,
+      status: 200,
       challenge: challenge,
     };
   } catch (error: any) {

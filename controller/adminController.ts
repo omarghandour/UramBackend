@@ -120,16 +120,7 @@ const addJudge = async (jwt: any, body: any, set: any, admin: any) => {
       role: "judge",
     });
     userJudge.save();
-    const id: any = userJudge.id;
-    const token = await jwt.sign({ id });
-    admin.set({
-      value: token,
-      httpOnly: true,
-      maxAge: 15 * 24 * 60 * 60,
-      sameSite: "strict",
-      secure: true,
-      path: "/",
-    });
+
     set.status = 200;
     return { message: "Judge created", status: 200, judge: { userJudge } };
   } catch (error: any) {
@@ -190,6 +181,7 @@ const loginJudge = async (jwt: any, body: any, set: any, admin: any) => {
     return "Phone number or password is incorrect";
   }
   const token = await jwt.sign({ id });
+
   admin.set({
     value: token,
     httpOnly: true,
