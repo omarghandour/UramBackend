@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: my-elysia-app
+    env: node
+    plan: free
+    buildCommand: bun install
+    startCommand: bun run start
+    region: oregon
+    envVars:
+      - key: BUN_VERSION
+        value: "latest"
