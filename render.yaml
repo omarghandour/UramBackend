@@ -1,7 +1,7 @@
 services:
   - type: web
     name: my-elysia-app
-    env: node
+    env: docker
     plan: free
     buildCommand: bun install
     startCommand: bun run start
