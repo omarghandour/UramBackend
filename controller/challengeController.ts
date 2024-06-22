@@ -4,6 +4,11 @@ const createChallenge = async (jwt: any, body: any, set: any, admin: any) => {
   const { name, description } = await body;
   console.log(name, description);
   try {
+    const CH = await Challenge.findOne({ name });
+    if (CH) {
+      set.status = 400;
+      return "Challenge already exists";
+    }
     const challenge = new Challenge({
       name,
       description,

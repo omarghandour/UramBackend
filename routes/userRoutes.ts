@@ -56,12 +56,12 @@ export const users = new Elysia({ prefix: "/users" })
     set.status = 200;
     return "User logged out successfully";
   })
-  .post("/getTeam", ({ body, set }) => getTeam(body, set), {
+  .post("/getTeam", ({ body, set, jwt }) => getTeam(body, set, jwt), {
     body: t.Object({
       id: t.String(),
     }),
   })
-  .patch("/updateTeam", ({ body, set }) => updateTeam(body, set), {
+  .patch("/updateTeam", ({ body, set, jwt }) => updateTeam(body, set, jwt), {
     body: t.Object({
       id: t.String(),
       name: t.String(),
@@ -69,7 +69,6 @@ export const users = new Elysia({ prefix: "/users" })
       // phone: t.String(),
       profilePic: t.String(),
       teamLeader: t.String(),
-      teamMembers: t.Array(t.String()),
       // challengeName: t.String(),
       // challengeType: t.String(),
     }),

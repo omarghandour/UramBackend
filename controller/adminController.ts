@@ -36,6 +36,7 @@ const registerUser = async (jwt: any, body: any, set: any, admin: any) => {
   });
   try {
     const user: any = await User.findOne({ phone });
+
     if (user) {
       set.status = 400;
       return "User already exists";
@@ -70,17 +71,19 @@ const loginUser = async (body: any, set: any, jwt: any, admin: any) => {
   const phone = body.phone;
   const password = body.password;
   const user: any = await User.findOne({ phone });
-  const id: any = user.id;
+
+  if (!user) {
+    set.status = 400;
+    return "Phone number or password is incorrect";
+  }
   const match = await Bun.password.verify(password, user.password);
+  if (!match) {
+    set.status = 400;
+    return "Phone number or password is incorrect";
+  }
+
+  const id: any = user.id;
   try {
-    if (!user) {
-      set.status = 400;
-      return "Phone number or password is incorrect";
-    }
-    if (!match) {
-      set.status = 400;
-      return "Phone number or password is incorrect";
-    }
     const token = await jwt.sign({ id });
 
     admin.set({
@@ -174,6 +177,10 @@ const loginJudge = async (jwt: any, body: any, set: any, admin: any) => {
     return "Phone number or password is incorrect";
   }
   const judge: any = await User.findOne({ phone });
+  if (!judge) {
+    set.status = 400;
+    return "Phone number or password is incorrect";
+  }
   const id: any = judge.id;
   const match = await Bun.password.verify(password, judge.password);
   if (!match) {

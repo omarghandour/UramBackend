@@ -3,6 +3,7 @@ import Team from "../models/teamModel";
 // const endPoint: any = process.env.APPWRITEENDPOINT;
 // const pID: any = process.env.APPWRITEPID;
 // const client = new Client().setEndpoint(endPoint).setProject(pID);
+const ENVIRONMENT = process.env.NODE_ENV || "development";
 
 const signupTeam = async (body: any, set: any, jwt: any, auth: any) => {
   const phone = body.phone;
@@ -29,14 +30,18 @@ const signupTeam = async (body: any, set: any, jwt: any, auth: any) => {
         set.status = 400;
         return "Invalid username or password";
       } else {
+        auth.set({
+          value: await jwt.sign(user.id),
+          httpOnly: true,
+          maxAge: 15 * 24 * 60 * 60,
+          secure: true,
+          sameSite: "lax",
+          path: "/",
+        });
         return {
           message: "Logged in successfully",
-          id: user._id,
-          name: user.name,
-          phone: user.phone,
-          profilePic: user.profilePic,
-          teamLeader: user.teamLeader,
-          teamMembers: user.teamMembers,
+          user: user,
+          cookie: auth,
         };
         set.status = 200;
       }
@@ -49,24 +54,19 @@ const signupTeam = async (body: any, set: any, jwt: any, auth: any) => {
 
     set.status = 201;
     if (createTeam) {
-      // auth.secrets = jwt;
-      // auth.value = createTeam.id;
-      // auth.httpOnly = true;
-      // auth.maxAge = 15 * 24 * 60 * 60;
-      // auth.sameSite = "strict";
       auth.set({
         value: await jwt.sign(createTeam.id),
         httpOnly: true,
         maxAge: 15 * 24 * 60 * 60,
-        sameSite: "none",
-        secure: false,
+        secure: ENVIRONMENT === "production",
+        sameSite: ENVIRONMENT === "production" ? "none" : "lax",
         path: "/",
       });
       return {
         status: 201,
         message: "Team created successfully",
-        id: createTeam._id,
-        phone: createTeam.phone,
+        data: createTeam,
+        cookie: auth,
       };
     }
   } catch (error: any) {
@@ -119,8 +119,8 @@ const loginTeam = async (jwt: any, body: any, set: any, auth: any) => {
       value: await jwt.sign(team.id),
       httpOnly: true,
       maxAge: 15 * 24 * 60 * 60,
-      sameSite: "none",
-      secure: true,
+      secure: ENVIRONMENT === "production",
+      sameSite: ENVIRONMENT === "production" ? "none" : "lax",
       path: "/",
     });
 
@@ -140,22 +140,23 @@ const loginTeam = async (jwt: any, body: any, set: any, auth: any) => {
   }
 };
 
-const getTeam = async (body: any, set: any) => {
+const getTeam = async (body: any, set: any, jwt: any) => {
   const id = body.id;
+  const token = await jwt.verify(id);
+  let stringValue: string = "";
+  for (const key in token) {
+    if (Object.prototype.hasOwnProperty.call(token, key) && key !== "exp") {
+      stringValue += token[key];
+    }
+  }
+
   try {
-    const team = await Team.findOne({ _id: id });
+    const team = await Team.findOne({ _id: stringValue });
     if (!team) {
       set.status = 404;
       return "Team not found";
     }
-    return {
-      id: team._id,
-      name: team.name,
-      phone: team.phone,
-      profilePic: team.profilePic,
-      teamLeader: team.teamLeader,
-      teamMembers: team.teamMembers,
-    };
+    return { team };
     set.status = 200;
   } catch (error: any) {
     set.status = 500;
@@ -163,27 +164,28 @@ const getTeam = async (body: any, set: any) => {
   }
 };
 
-const updateTeam = async (body: any, set: any) => {
+const updateTeam = async (body: any, set: any, jwt: any) => {
   const id = body.id;
   const name = body.name;
   const profilePic = body.profilePic;
   const teamLeader = body.teamLeader;
-  const teamMembers = body.teamMembers;
+  // const teamMembers = body.teamMembers;
   const password = body.password;
-  // const challengeName = body.challengeName;
-  // const challengeType = body.challengeType;
-  // const challenge = {
-  //   Name: "",
-  //   Type: "",
-  //   score: 1,
-  // };
+
+  const token = await jwt.verify(id);
+  let stringValue: string = "";
+  for (const key in token) {
+    if (Object.prototype.hasOwnProperty.call(token, key) && key !== "exp") {
+      stringValue += token[key];
+    }
+  }
   const salt: any = process.env.SALT;
   const hashedPassword = await Bun.password.hash(password, {
     algorithm: "bcrypt",
     cost: +salt, // number between 4-31
   });
   try {
-    const team = await Team.findOne({ _id: id });
+    const team = await Team.findOne({ _id: stringValue });
     if (!team) {
       set.status = 404;
       return "Team not found";
@@ -192,12 +194,14 @@ const updateTeam = async (body: any, set: any) => {
     team.profilePic = profilePic;
     team.teamLeader = teamLeader;
     team.password = hashedPassword;
-    team.teamMembers = teamMembers;
-    // team.challenge = challenge;
-    // team.challengeType = challengeType;
+    // team.teamMembers = teamMembers;
+
     await team.save();
     set.status = 200;
-    return "Team updated successfully";
+    return {
+      message: "Team updated successfully",
+      team,
+    };
   } catch (error: any) {
     set.status = 500;
     return error.message;
