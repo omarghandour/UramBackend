@@ -46,12 +46,13 @@ const signupTeam = async (
           sameSite: "lax",
           path: "/",
         });
+        set.status = 200;
+
         return {
           message: "Logged in successfully",
           user: user,
           cookie: auth,
         };
-        set.status = 200;
       }
     }
     if (user) {
@@ -68,37 +69,37 @@ const signupTeam = async (
           sameSite: "lax",
           path: "/",
         });
+        set.status = 200;
+
         return {
           message: "Logged in successfully",
           user: user,
           cookie: auth,
         };
-        set.status = 200;
       }
     }
-    const createTeam = await Team.create({
-      phone: phone,
-      password: hashedPassword,
-    });
-    await createTeam.save();
+    // const createTeam = await Team.create({
+    //   phone: phone,
+    //   password: hashedPassword,
+    // });
+    // await createTeam.save();
 
-    set.status = 201;
-    if (createTeam) {
-      auth.set({
-        value: await jwt.sign(createTeam.id),
-        httpOnly: true,
-        maxAge: 15 * 24 * 60 * 60,
-        secure: ENVIRONMENT === "production",
-        sameSite: ENVIRONMENT === "production" ? "none" : "lax",
-        path: "/",
-      });
-      return {
-        status: 201,
-        message: "Team created successfully",
-        data: createTeam,
-        cookie: auth,
-      };
-    }
+    // if (createTeam) {
+    //   auth.set({
+    //     value: await jwt.sign(createTeam.id),
+    //     httpOnly: true,
+    //     maxAge: 15 * 24 * 60 * 60,
+    //     secure: ENVIRONMENT === "production",
+    //     sameSite: ENVIRONMENT === "production" ? "none" : "lax",
+    //     path: "/",
+    //   });
+    //   return {
+    //     status: 201,
+    //     message: "Team created successfully",
+    //     data: createTeam,
+    //     cookie: auth,
+    //   };
+    // }
   } catch (error: any) {
     set.status = 500;
 
