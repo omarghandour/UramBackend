@@ -1,3 +1,4 @@
+import User from "../models/adminModel";
 import Team from "../models/teamModel";
 // import { Client, Account, ID } from "appwrite";
 // const endPoint: any = process.env.APPWRITEENDPOINT;
@@ -17,7 +18,7 @@ const signupTeam = async (body: any, set: any, jwt: any, auth: any) => {
   });
   try {
     const length: number = password.length;
-    const Admin = await Team.findOne({ phone });
+    const Admin = await User.findOne({ phone });
     const user = await Team.findOne({ phone });
     if (length < 8) {
       set.status = 400;
