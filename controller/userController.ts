@@ -6,7 +6,13 @@ import Team from "../models/teamModel";
 // const client = new Client().setEndpoint(endPoint).setProject(pID);
 const ENVIRONMENT = process.env.NODE_ENV || "development";
 
-const signupTeam = async (body: any, set: any, jwt: any, auth: any) => {
+const signupTeam = async (
+  body: any,
+  set: any,
+  jwt: any,
+  auth: any,
+  admin: any
+) => {
   const phone = body.phone;
   const password = body.password;
   // USE BCRYPT
@@ -32,7 +38,7 @@ const signupTeam = async (body: any, set: any, jwt: any, auth: any) => {
         set.status = 400;
         return "Invalid username or password";
       } else {
-        auth.set({
+        admin.set({
           value: await jwt.sign(Admin.id),
           httpOnly: true,
           maxAge: 15 * 24 * 60 * 60,

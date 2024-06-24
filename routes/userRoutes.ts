@@ -19,8 +19,8 @@ export const users = new Elysia({ prefix: "/users" })
   )
   .post(
     "/signup",
-    ({ jwt, body, set, cookie: { auth } }: any) =>
-      signupTeam(body, set, jwt, auth),
+    ({ jwt, body, set, cookie: { auth, admin } }: any) =>
+      signupTeam(body, set, jwt, auth, admin),
     {
       body: t.Object({
         phone: t.String(),
