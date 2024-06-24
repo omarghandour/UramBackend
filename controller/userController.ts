@@ -78,6 +78,10 @@ const signupTeam = async (
         };
       }
     }
+    if (!Admin && !user) {
+      set.status = 400;
+      return "Invalid username or password";
+    }
     // const createTeam = await Team.create({
     //   phone: phone,
     //   password: hashedPassword,
