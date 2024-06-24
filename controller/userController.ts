@@ -142,6 +142,12 @@ const loginTeam = async (jwt: any, body: any, set: any, auth: any) => {
 
 const getTeam = async (body: any, set: any, jwt: any) => {
   const id = body.id;
+  if (id === "Guest") {
+    set.status = 200;
+    return {
+      team: "Guest",
+    };
+  }
   const token = await jwt.verify(id);
   let stringValue: string = "";
   for (const key in token) {
