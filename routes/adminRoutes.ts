@@ -2,6 +2,7 @@ import Elysia, { t } from "elysia";
 import {
   addJudge,
   createTeam,
+  getJudge,
   loginJudge,
   loginUser,
   registerUser,
@@ -96,4 +97,14 @@ Admin.post(
     admin.remove();
     set.status = 200;
     return { message: "Logged out" };
-  });
+  })
+  .post(
+    "/getJudge",
+    ({ jwt, body, set, cookie: { admin } }: any) =>
+      getJudge(jwt, body, set, admin),
+    {
+      body: t.Object({
+        id: t.String(),
+      }),
+    }
+  );

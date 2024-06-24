@@ -205,4 +205,33 @@ const loginJudge = async (jwt: any, body: any, set: any, admin: any) => {
     id: judge.id,
   };
 };
-export { registerUser, loginUser, addJudge, createTeam, loginJudge };
+const getJudge = async (jwt: any, body: any, set: any, admin: any) => {
+  const id = body.id;
+  // if (id === "Guest") {
+  //   set.status = 200;
+  //   return {
+  //     team: "Guest",
+  //   };
+  // }
+  const token = await jwt.verify(id);
+  let stringValue: string = "";
+  for (const key in token) {
+    if (Object.prototype.hasOwnProperty.call(token, key) && key !== "exp") {
+      stringValue += token[key];
+    }
+  }
+
+  try {
+    const team = await User.findOne({ _id: stringValue });
+    if (!team) {
+      set.status = 404;
+      return "Team not found";
+    }
+    return { team };
+    set.status = 200;
+  } catch (error: any) {
+    set.status = 500;
+    return error.message;
+  }
+};
+export { registerUser, loginUser, addJudge, createTeam, loginJudge, getJudge };
