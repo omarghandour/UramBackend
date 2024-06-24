@@ -54,17 +54,21 @@ Admin.guard(
           }),
         }
       )
-      .patch("/updateTeam", ({ body, set }) => updateTeam(body, set), {
-        body: t.Object({
-          id: t.String(),
-          name: t.String(),
-          password: t.String(),
-          // phone: t.String(),
-          profilePic: t.String(),
-          teamLeader: t.String(),
-          teamMembers: t.Array(t.String()),
-        }),
-      })
+      .patch(
+        "/updateTeam",
+        ({ body, set, jwt }: any) => updateTeam(body, set, jwt),
+        {
+          body: t.Object({
+            id: t.String(),
+            name: t.String(),
+            password: t.String(),
+            // phone: t.String(),
+            profilePic: t.String(),
+            teamLeader: t.String(),
+            teamMembers: t.Array(t.String()),
+          }),
+        }
+      )
 );
 Admin.post(
   "/login",

@@ -17,13 +17,36 @@ const signupTeam = async (body: any, set: any, jwt: any, auth: any) => {
   });
   try {
     const length: number = password.length;
+    const Admin = await Team.findOne({ phone });
     const user = await Team.findOne({ phone });
     if (length < 8) {
       set.status = 400;
       return "Password must be at least 8 characters long";
     }
     const hash: any = user?.password;
-
+    const adminHash = Admin?.password;
+    if (Admin) {
+      const isMatch = await Bun.password.verify(password, adminHash || "");
+      if (!Admin || !isMatch) {
+        set.status = 400;
+        return "Invalid username or password";
+      } else {
+        auth.set({
+          value: await jwt.sign(Admin.id),
+          httpOnly: true,
+          maxAge: 15 * 24 * 60 * 60,
+          secure: true,
+          sameSite: "lax",
+          path: "/",
+        });
+        return {
+          message: "Logged in successfully",
+          user: user,
+          cookie: auth,
+        };
+        set.status = 200;
+      }
+    }
     if (user) {
       const isMatch = await Bun.password.verify(password, hash || "");
       if (!user || !isMatch) {
@@ -191,7 +214,7 @@ const updateTeam = async (body: any, set: any, jwt: any) => {
     cost: +salt, // number between 4-31
   });
   try {
-    const team = await Team.findOne({ _id: stringValue });
+    const team = await Team.findOne({ _id: id });
     if (!team) {
       set.status = 404;
       return "Team not found";
