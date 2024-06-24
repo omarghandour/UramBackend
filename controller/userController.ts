@@ -205,7 +205,7 @@ const updateTeam = async (body: any, set: any, jwt: any) => {
   const name = body.name;
   const profilePic = body.profilePic;
   const teamLeader = body.teamLeader;
-  // const teamMembers = body.teamMembers;
+  const teamMembers: [string] = body.teamMembers;
   const password = body.password;
 
   const token = await jwt.verify(id);
@@ -230,7 +230,7 @@ const updateTeam = async (body: any, set: any, jwt: any) => {
     team.profilePic = profilePic;
     team.teamLeader = teamLeader;
     team.password = hashedPassword;
-    // team.teamMembers = teamMembers;
+    team.teamMembers = teamMembers;
 
     await team.save();
     set.status = 200;
