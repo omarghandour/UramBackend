@@ -1,5 +1,6 @@
 import Elysia, { t } from "elysia";
 import {
+  CreateNotification,
   addJudge,
   createTeam,
   getJudge,
@@ -70,6 +71,15 @@ Admin.guard(
           }),
         }
       )
+).post(
+  "/crateNotification",
+  ({ jwt, body, set }: any) => CreateNotification(jwt, body, set),
+  {
+    body: t.Object({
+      name: t.String(),
+      description: t.String(),
+    }),
+  }
 );
 Admin.post(
   "/login",

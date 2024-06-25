@@ -1,6 +1,6 @@
 import User from "../models/adminModel";
 import Team from "../models/teamModel";
-
+import Notification from "../models/notification";
 // Predefined admin credentials
 const adminUsername = "UramIt";
 const adminPassword = "UramITEG";
@@ -234,4 +234,27 @@ const getJudge = async (jwt: any, body: any, set: any, admin: any) => {
     return error.message;
   }
 };
-export { registerUser, loginUser, addJudge, createTeam, loginJudge, getJudge };
+const CreateNotification = async (jwt: any, body: any, set: any) => {
+  const name = body.name;
+  const description = body.description;
+  try {
+    const notification = new Notification({
+      name: name,
+      description: description,
+    });
+    notification.save();
+    set.status = 201;
+    return { message: "Notification created", status: 201 };
+  } catch (error: any) {
+    return error.message;
+  }
+};
+export {
+  registerUser,
+  loginUser,
+  addJudge,
+  createTeam,
+  loginJudge,
+  getJudge,
+  CreateNotification,
+};
