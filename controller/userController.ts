@@ -1,5 +1,6 @@
 import User from "../models/adminModel";
 import Team from "../models/teamModel";
+import Notification from "../models/notification";
 // import { Client, Account, ID } from "appwrite";
 // const endPoint: any = process.env.APPWRITEENDPOINT;
 // const pID: any = process.env.APPWRITEPID;
@@ -248,4 +249,23 @@ const updateTeam = async (body: any, set: any, jwt: any) => {
     return error.message;
   }
 };
-export { signupTeam, loginTeam, verifyPhone, getTeam, updateTeam };
+const getNotifications = async (set: any) => {
+  try {
+    const Notifications = await Notification.find();
+    set.status = 200;
+    return {
+      Notifications: Notifications,
+      status: 200,
+    };
+  } catch (error: any) {
+    return error.message;
+  }
+};
+export {
+  signupTeam,
+  loginTeam,
+  verifyPhone,
+  getTeam,
+  updateTeam,
+  getNotifications,
+};

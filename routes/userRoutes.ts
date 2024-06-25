@@ -2,6 +2,7 @@ import jwt from "@elysiajs/jwt";
 import { protectedRoute } from "../middleware/protectedRoute";
 import Elysia, { t } from "elysia";
 import {
+  getNotifications,
   getTeam,
   loginTeam,
   signupTeam,
@@ -72,4 +73,5 @@ export const users = new Elysia({ prefix: "/users" })
       // challengeName: t.String(),
       // challengeType: t.String(),
     }),
-  });
+  })
+  .get("/getNotification", ({ set }) => getNotifications(set));
