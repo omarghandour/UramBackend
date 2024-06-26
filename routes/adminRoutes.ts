@@ -56,6 +56,7 @@ Admin.guard(
             profilePic: t.String(),
             teamLeader: t.String(),
             teamMembers: t.Array(t.String()),
+            challenge: t.String(),
           }),
         }
       )
@@ -118,6 +119,16 @@ Admin.post(
         profilePic: t.String(),
         teamLeader: t.String(),
         teamMembers: t.Array(t.String()),
+      }),
+    }
+  )
+  .patch(
+    "/updateTeamChallenge",
+    ({ body, set, jwt }: any) => updateTeam(body, set, jwt),
+    {
+      body: t.Object({
+        id: t.String(),
+        challenge: t.String(),
       }),
     }
   );

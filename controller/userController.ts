@@ -208,12 +208,7 @@ const getTeam = async (body: any, set: any, jwt: any) => {
 
 const updateTeam = async (body: any, set: any, jwt: any) => {
   const id = body.id;
-  const name = body.name;
-  const profilePic = body.profilePic;
-  const teamLeader = body.teamLeader;
-  const teamMembers: [string] = body.teamMembers;
-  const password = body.password;
-
+  const challenge = body.challenge;
   const token = await jwt.verify(id);
   let stringValue: string = "";
   for (const key in token) {
@@ -221,22 +216,13 @@ const updateTeam = async (body: any, set: any, jwt: any) => {
       stringValue += token[key];
     }
   }
-  const salt: any = process.env.SALT;
-  const hashedPassword = await Bun.password.hash(password, {
-    algorithm: "bcrypt",
-    cost: +salt, // number between 4-31
-  });
   try {
     const team = await Team.findOne({ _id: id });
     if (!team) {
       set.status = 404;
       return "Team not found";
     }
-    team.name = name;
-    team.profilePic = profilePic;
-    team.teamLeader = teamLeader;
-    team.password = hashedPassword;
-    team.teamMembers = teamMembers;
+    team.challenge = challenge;
 
     await team.save();
     set.status = 200;
