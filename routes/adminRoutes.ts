@@ -44,20 +44,6 @@ Admin.guard(
         }
       )
 
-      .post(
-        "/createTeam",
-        ({ jwt, body, set, cookie: { admin } }: any) =>
-          createTeam(jwt, body, set, admin),
-        {
-          body: t.Object({
-            name: t.String(),
-            phone: t.String(),
-            password: t.String(),
-            profilePic: t.String(),
-            teamLeader: t.String(),
-          }),
-        }
-      )
       .patch(
         "/updateTeam",
         ({ body, set, jwt }: any) => updateTeam(body, set, jwt),
@@ -117,6 +103,20 @@ Admin.post(
     {
       body: t.Object({
         id: t.String(),
+      }),
+    }
+  )
+  .post(
+    "/createTeam",
+    ({ jwt, body, set, cookie: { admin } }: any) =>
+      createTeam(jwt, body, set, admin),
+    {
+      body: t.Object({
+        name: t.String(),
+        phone: t.String(),
+        password: t.String(),
+        profilePic: t.String(),
+        teamLeader: t.String(),
       }),
     }
   );
