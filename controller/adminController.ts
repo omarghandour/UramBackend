@@ -95,7 +95,7 @@ const loginUser = async (body: any, set: any, jwt: any, admin: any) => {
       path: "/",
     });
     set.status = 200;
-    return { message: "Authorized", status: 200 };
+    return { message: "Authorized", status: 200, cookie: admin };
   } catch (error: any) {
     return error.message;
   }
