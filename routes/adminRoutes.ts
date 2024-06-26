@@ -53,6 +53,8 @@ Admin.guard(
             name: t.String(),
             phone: t.String(),
             password: t.String(),
+            profilePic: t.String(),
+            teamLeader: t.String(),
           }),
         }
       )
