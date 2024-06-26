@@ -136,6 +136,7 @@ const createTeam = async (jwt: any, body: any, set: any, admin: any) => {
   const password = body.password;
   const profilePic = body.profilePic;
   const teamLeader = body.teamLeader;
+  const teamMembers = body.teamMembers;
   const salt: any = process.env.SALT;
   const hashedPassword = await Bun.password.hash(password, {
     algorithm: "bcrypt",
@@ -154,6 +155,7 @@ const createTeam = async (jwt: any, body: any, set: any, admin: any) => {
       password: hashedPassword,
       profilePic,
       teamLeader,
+      teamMembers,
     });
     userTeam.save();
     const id: any = userTeam.id;

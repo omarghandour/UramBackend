@@ -117,6 +117,7 @@ Admin.post(
         password: t.String(),
         profilePic: t.String(),
         teamLeader: t.String(),
+        teamMembers: t.Array(t.String()),
       }),
     }
   );
