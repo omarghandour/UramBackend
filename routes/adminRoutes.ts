@@ -128,7 +128,10 @@ Admin.post(
     {
       body: t.Object({
         id: t.String(),
-        challenge: t.Object({}),
+        challenge: t.Object({
+          name: t.String(),
+          description: t.String(),
+        }),
       }),
     }
   );
