@@ -208,7 +208,14 @@ const getTeam = async (body: any, set: any, jwt: any) => {
 
 const updateTeam = async (body: any, set: any, jwt: any) => {
   const id = body.id;
-  const challenge = body.challenge;
+  const name = body.name;
+  const password = body.password;
+  // phone: t.String(),
+  const profilePic = body.profilePic;
+  const teamLeader = body.teamLeader;
+  // teamMembers: t.Array(t.String()),
+  // challenge: t.String(),
+  // const challenge = body.challenge;
   const token = await jwt.verify(id);
   let stringValue: string = "";
   for (const key in token) {
@@ -222,7 +229,10 @@ const updateTeam = async (body: any, set: any, jwt: any) => {
       set.status = 404;
       return "Team not found";
     }
-    team.challenge = challenge;
+    team.name;
+    team.phone;
+    team.password;
+    // team.challenge = challenge;
 
     await team.save();
     set.status = 200;
