@@ -216,6 +216,11 @@ const updateTeam = async (body: any, set: any, jwt: any) => {
   // teamMembers: t.Array(t.String()),
   // challenge: t.String(),
   // const challenge = body.challenge;
+  const salt: any = process.env.SALT;
+  const hashedPassword = await Bun.password.hash(password, {
+    algorithm: "bcrypt",
+    cost: +salt, // number between 4-31
+  });
   const token = await jwt.verify(id);
   let stringValue: string = "";
   for (const key in token) {
@@ -231,7 +236,7 @@ const updateTeam = async (body: any, set: any, jwt: any) => {
     }
     team.name = name;
     team.phone = phone;
-    team.password = password;
+    team.password = hashedPassword;
 
     // team.challenge = challenge;
 
