@@ -210,7 +210,7 @@ const updateTeam = async (body: any, set: any, jwt: any) => {
   const id = body.id;
   const name = body.name;
   const password = body.password;
-  // phone: t.String(),
+  const phone = body.phone;
   const profilePic = body.profilePic;
   const teamLeader = body.teamLeader;
   // teamMembers: t.Array(t.String()),
@@ -229,9 +229,10 @@ const updateTeam = async (body: any, set: any, jwt: any) => {
       set.status = 404;
       return "Team not found";
     }
-    team.name;
-    team.phone;
-    team.password;
+    team.name = name;
+    team.phone = phone;
+    team.password = password;
+
     // team.challenge = challenge;
 
     await team.save();
