@@ -52,6 +52,7 @@ Admin.guard(
       body: t.Object({
         name: t.String(),
         description: t.String(),
+        photo: t.Optional(t.String()),
       }),
     }
   )
@@ -145,7 +146,7 @@ Admin.post(
     {
       body: t.Object({
         name: t.String(),
-        description: t.String(),
+        type: t.String(),
       }),
     }
   );

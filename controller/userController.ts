@@ -269,6 +269,7 @@ const UpdeteTeamChallenge = async (
   params: any
 ) => {
   const id = params.id;
+  const challenge = body.challenge;
 
   try {
     const team = await Team.findOne({ _id: id });
@@ -276,7 +277,7 @@ const UpdeteTeamChallenge = async (
       set.status = 404;
       return "Team not found";
     }
-    team.challenge = id;
+    team.challenge = challenge;
 
     // team.challenge = challenge;
 

@@ -244,7 +244,20 @@ const getJudge = async (jwt: any, body: any, set: any, admin: any) => {
 const CreateNotification = async (jwt: any, body: any, set: any) => {
   const name = body.name;
   const description = body.description;
+  const photo = body.photo;
+  console.log(body);
+
   try {
+    if (photo && photo !== undefined && photo.length > 0) {
+      const notification = new Notification({
+        name: name,
+        description: description,
+        photo: photo,
+      });
+      notification.save();
+      set.status = 201;
+      return { message: "Notification created", status: 201 };
+    }
     const notification = new Notification({
       name: name,
       description: description,
@@ -268,11 +281,11 @@ const getTeams = async (set: any) => {
 };
 const CreateChallenge = async (body: any, set: any, jwt: any) => {
   const name = body.name;
-  const description = body.description;
+  const type = body.type;
   try {
     const challenge = new Challenge({
       name: name,
-      description: description,
+      type: type,
     });
     challenge.save();
     set.status = 201;
