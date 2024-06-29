@@ -206,8 +206,8 @@ const getTeam = async (body: any, set: any, jwt: any) => {
   }
 };
 
-const updateTeam = async (body: any, set: any, jwt: any, params: number) => {
-  const id = params;
+const updateTeam = async (body: any, set: any, jwt: any, params: any) => {
+  const id = params.id;
   const name = body.name;
   const password = body.password;
   const phone = body.phone;
