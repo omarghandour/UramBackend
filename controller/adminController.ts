@@ -292,6 +292,21 @@ const CreateChallenge = async (body: any, set: any, jwt: any) => {
     return { message: "Challenge created", status: 201 };
   } catch (error) {}
 };
+const getChallenge = async (body: any, set: any) => {
+  const id = body.id;
+  try {
+    const challenge = await Challenge.findById(id);
+    if (!challenge) {
+      set.status = 404;
+      return "Challenge not found";
+    }
+    set.status = 200;
+    return { challenge };
+  } catch (error: any) {
+    set.status = 500;
+    return error.message;
+  }
+};
 export {
   registerUser,
   loginUser,
@@ -302,4 +317,5 @@ export {
   CreateNotification,
   getTeams,
   CreateChallenge,
+  getChallenge,
 };

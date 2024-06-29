@@ -4,6 +4,7 @@ import {
   CreateNotification,
   addJudge,
   createTeam,
+  getChallenge,
   getJudge,
   getTeams,
   loginJudge,
@@ -149,4 +150,9 @@ Admin.post(
         type: t.String(),
       }),
     }
-  );
+  )
+  .post("/challenge", ({ body, set }) => getChallenge(body, set), {
+    body: t.Object({
+      id: t.String(),
+    }),
+  });
