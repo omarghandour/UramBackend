@@ -206,13 +206,15 @@ const getTeam = async (body: any, set: any, jwt: any) => {
   }
 };
 
-const updateTeam = async (body: any, set: any, jwt: any) => {
-  const id = body.id;
+const updateTeam = async (body: any, set: any, jwt: any, params: number) => {
+  const id = params;
   const name = body.name;
   const password = body.password;
   const phone = body.phone;
   const profilePic = body.profilePic;
   const teamLeader = body.teamLeader;
+  console.log(id);
+
   // teamMembers: t.Array(t.String()),
   // challenge: t.String(),
   // const challenge = body.challenge;
@@ -237,6 +239,8 @@ const updateTeam = async (body: any, set: any, jwt: any) => {
     team.name = name;
     team.phone = phone;
     team.password = hashedPassword;
+    team.profilePic = profilePic;
+    team.teamLeader = teamLeader;
 
     // team.challenge = challenge;
 

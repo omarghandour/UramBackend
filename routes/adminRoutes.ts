@@ -31,36 +31,18 @@ Admin.guard(
           password: t.String(),
         }),
       }
+    ).post(
+      "/judge",
+      ({ jwt, body, set, cookie: { admin } }: any) =>
+        addJudge(jwt, body, set, admin),
+      {
+        body: t.Object({
+          name: t.String(),
+          phone: t.String(),
+          password: t.String(),
+        }),
+      }
     )
-      .post(
-        "/judge",
-        ({ jwt, body, set, cookie: { admin } }: any) =>
-          addJudge(jwt, body, set, admin),
-        {
-          body: t.Object({
-            name: t.String(),
-            phone: t.String(),
-            password: t.String(),
-          }),
-        }
-      )
-
-      .patch(
-        "/updateTeam",
-        ({ body, set, jwt }: any) => updateTeam(body, set, jwt),
-        {
-          body: t.Object({
-            id: t.String(),
-            name: t.String(),
-            password: t.String(),
-            // phone: t.String(),
-            profilePic: t.String(),
-            teamLeader: t.String(),
-            teamMembers: t.Array(t.String()),
-            challenge: t.String(),
-          }),
-        }
-      )
 )
   .post(
     "/crateNotification",
@@ -126,8 +108,8 @@ Admin.post(
     }
   )
   .patch(
-    "/updateTeamChallenge",
-    ({ body, set, jwt }: any) => updateTeam(body, set, jwt),
+    "/updateTeamChallenge/:id",
+    ({ body, set, jwt, params }: any) => updateTeam(body, set, jwt, params),
     {
       body: t.Object({
         id: t.String(),
@@ -135,6 +117,28 @@ Admin.post(
           name: t.String(),
           description: t.String(),
         }),
+      }),
+      params: t.Object({
+        id: t.Numeric(),
+      }),
+    }
+  )
+  .patch(
+    "/updateTeam/:id",
+    ({ body, set, jwt, params }: any) => updateTeam(body, set, jwt, params),
+    {
+      body: t.Object({
+        id: t.String(),
+        name: t.String(),
+        phone: t.String(),
+        password: t.String(),
+        profilePic: t.String(),
+        teamLeader: t.String(),
+        // teamMembers: t.Array(t.String()),
+        // challenge: t.String(),
+      }),
+      params: t.Object({
+        id: t.String(),
       }),
     }
   );
