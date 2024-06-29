@@ -128,7 +128,6 @@ Admin.post(
     ({ body, set, jwt, params }: any) => updateTeam(body, set, jwt, params),
     {
       body: t.Object({
-        id: t.String(),
         name: t.String(),
         phone: t.String(),
         password: t.String(),
