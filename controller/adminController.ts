@@ -74,12 +74,12 @@ const loginUser = async (body: any, set: any, jwt: any, admin: any) => {
 
   if (!user) {
     set.status = 400;
-    return "Phone number or password is incorrect";
+    throw new Error("Phone number or password is incorrect");
   }
   const match = await Bun.password.verify(password, user.password);
   if (!match) {
     set.status = 400;
-    return "Phone number or password is incorrect";
+    throw new Error("Phone number or password is incorrect");
   }
 
   const id: any = user.id;
