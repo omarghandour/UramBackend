@@ -255,6 +255,16 @@ const CreateNotification = async (jwt: any, body: any, set: any) => {
     return error.message;
   }
 };
+const getTeams = async (set: any) => {
+  try {
+    const teams = await Team.find({});
+    set.status = 200;
+    return { teams };
+  } catch (error: any) {
+    set.status = 500;
+    return error.message;
+  }
+};
 export {
   registerUser,
   loginUser,
@@ -263,4 +273,5 @@ export {
   loginJudge,
   getJudge,
   CreateNotification,
+  getTeams,
 };

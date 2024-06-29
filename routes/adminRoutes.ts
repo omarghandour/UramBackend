@@ -4,6 +4,7 @@ import {
   addJudge,
   createTeam,
   getJudge,
+  getTeams,
   loginJudge,
   loginUser,
   registerUser,
@@ -60,16 +61,18 @@ Admin.guard(
           }),
         }
       )
-).post(
-  "/crateNotification",
-  ({ jwt, body, set }: any) => CreateNotification(jwt, body, set),
-  {
-    body: t.Object({
-      name: t.String(),
-      description: t.String(),
-    }),
-  }
-);
+)
+  .post(
+    "/crateNotification",
+    ({ jwt, body, set }: any) => CreateNotification(jwt, body, set),
+    {
+      body: t.Object({
+        name: t.String(),
+        description: t.String(),
+      }),
+    }
+  )
+  .get("/getTeams", ({ set }) => getTeams(set));
 Admin.post(
   "/login",
   ({ body, set, jwt, cookie: { admin } }: any) =>
