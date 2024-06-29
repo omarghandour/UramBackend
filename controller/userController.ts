@@ -162,12 +162,7 @@ const loginTeam = async (jwt: any, body: any, set: any, auth: any) => {
 
     return {
       message: "Logged in successfully",
-      id: team._id,
-      name: team.name,
-      phone: team.phone,
-      profilePic: team.profilePic,
-      teamLeader: team.teamLeader,
-      teamMembers: team.teamMembers,
+      team: team,
     };
     set.status = 200;
   } catch (error: any) {
@@ -267,6 +262,32 @@ const getNotifications = async (set: any) => {
     return error.message;
   }
 };
+const UpdeteTeamChallenge = async (
+  body: any,
+  set: any,
+  jwt: any,
+  params: any
+) => {
+  const id = params.id;
+
+  try {
+    const team = await Team.findOne({ _id: id });
+    if (!team) {
+      set.status = 404;
+      return "Team not found";
+    }
+    team.challenge = id;
+
+    // team.challenge = challenge;
+
+    await team.save();
+    set.status = 200;
+    return {
+      message: "Team updated successfully",
+      team,
+    };
+  } catch (error) {}
+};
 export {
   signupTeam,
   loginTeam,
@@ -274,4 +295,5 @@ export {
   getTeam,
   updateTeam,
   getNotifications,
+  UpdeteTeamChallenge,
 };

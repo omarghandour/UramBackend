@@ -29,18 +29,18 @@ export const users = new Elysia({ prefix: "/users" })
       }),
     }
   )
-  .post(
-    "/verify",
-    ({ jwt, body, set, cookie: { auth } }: any) =>
-      verifyPhone(body, set, jwt, auth),
-    {
-      body: t.Object({
-        userId: t.String(),
-        secret: t.String(),
-        phone: t.String(),
-      }),
-    }
-  )
+  // .post(
+  //   "/verify",
+  //   ({ jwt, body, set, cookie: { auth } }: any) =>
+  //     verifyPhone(body, set, jwt, auth),
+  //   {
+  //     body: t.Object({
+  //       userId: t.String(),
+  //       secret: t.String(),
+  //       phone: t.String(),
+  //     }),
+  //   }
+  // )
   .post(
     "/login",
     ({ jwt, body, set, cookie: { auth } }: any) =>
@@ -62,16 +62,16 @@ export const users = new Elysia({ prefix: "/users" })
       id: t.String(),
     }),
   })
-  .patch("/updateTeam", ({ body, set, jwt }) => updateTeam(body, set, jwt), {
-    body: t.Object({
-      id: t.String(),
-      name: t.String(),
-      password: t.String(),
-      phone: t.String(),
-      profilePic: t.String(),
-      teamLeader: t.String(),
-      // challengeName: t.String(),
-      // challengeType: t.String(),
-    }),
-  })
+  // .patch("/updateTeam", ({ body, set, jwt }) => updateTeam(body, set, jwt), {
+  //   body: t.Object({
+  //     id: t.String(),
+  //     name: t.String(),
+  //     password: t.String(),
+  //     phone: t.String(),
+  //     profilePic: t.String(),
+  //     teamLeader: t.String(),
+  //     // challengeName: t.String(),
+  //     // challengeType: t.String(),
+  //   }),
+  // })
   .get("/getNotification", ({ set }) => getNotifications(set));

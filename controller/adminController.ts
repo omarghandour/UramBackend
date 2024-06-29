@@ -1,6 +1,7 @@
 import User from "../models/adminModel";
 import Team from "../models/teamModel";
 import Notification from "../models/notification";
+import Challenge from "../models/challengeModel";
 // Predefined admin credentials
 const adminUsername = "UramIt";
 const adminPassword = "UramITEG";
@@ -265,6 +266,19 @@ const getTeams = async (set: any) => {
     return error.message;
   }
 };
+const CreateChallenge = async (body: any, set: any, jwt: any) => {
+  const name = body.name;
+  const description = body.description;
+  try {
+    const challenge = new Challenge({
+      name: name,
+      description: description,
+    });
+    challenge.save();
+    set.status = 201;
+    return { message: "Challenge created", status: 201 };
+  } catch (error) {}
+};
 export {
   registerUser,
   loginUser,
@@ -274,4 +288,5 @@ export {
   getJudge,
   CreateNotification,
   getTeams,
+  CreateChallenge,
 };

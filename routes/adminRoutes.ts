@@ -1,5 +1,6 @@
 import Elysia, { t } from "elysia";
 import {
+  CreateChallenge,
   CreateNotification,
   addJudge,
   createTeam,
@@ -10,7 +11,7 @@ import {
   registerUser,
 } from "../controller/adminController";
 import { adminCheck } from "../middleware/adminProtect";
-import { updateTeam } from "../controller/userController";
+import { UpdeteTeamChallenge, updateTeam } from "../controller/userController";
 
 export const Admin = new Elysia({ prefix: "/admin" });
 Admin.guard(
@@ -109,14 +110,11 @@ Admin.post(
   )
   .patch(
     "/updateTeamChallenge/:id",
-    ({ body, set, jwt, params }: any) => updateTeam(body, set, jwt, params),
+    ({ body, set, jwt, params }: any) =>
+      UpdeteTeamChallenge(body, set, jwt, params),
     {
       body: t.Object({
-        id: t.String(),
-        challenge: t.Object({
-          name: t.String(),
-          description: t.String(),
-        }),
+        challenge: t.String(),
       }),
       params: t.Object({
         id: t.String(),
@@ -138,6 +136,16 @@ Admin.post(
       }),
       params: t.Object({
         id: t.String(),
+      }),
+    }
+  )
+  .post(
+    "/CreateChallenge",
+    ({ body, set, jwt }: any) => CreateChallenge(body, set, jwt),
+    {
+      body: t.Object({
+        name: t.String(),
+        description: t.String(),
       }),
     }
   );
