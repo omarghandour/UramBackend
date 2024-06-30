@@ -344,16 +344,21 @@ const addRating = async (params: any, body: any, set: any) => {
 const UpdeteTeamJudge = async (body: any, set: any, params: any) => {
   const teamId = params.id;
   const judgeId = body.judgeId;
+  const judge = await User.find({ role: "judge" });
+  const judgeIds = judge.map((jud) => jud._id);
+
   try {
-    const team = await Team.findByIdAndUpdate(
-      teamId,
-      { $push: { judge: judgeId } },
-      { new: true }
-    );
-    if (!team) {
-      set.status = 404;
-      return "Team not found";
-    }
+    await Team.updateMany({}, { $addToSet: { judge: { $each: judgeIds } } });
+    // const hh = await Team.find(teamId);
+    // const team = await Team.findByIdAndUpdate(
+    //   teamId,
+    //   { $push: { judge: judgeId } },
+    //   { new: true }
+    // );
+    // if (!team) {
+    //   set.status = 404;
+    //   return "Team not found";
+    // }
     set.status = 200;
     return { message: "Team leader updated", status: 200 };
   } catch (error: any) {
