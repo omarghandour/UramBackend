@@ -272,7 +272,7 @@ const UpdeteTeamChallenge = async (
   const challenge = body.challenge;
 
   try {
-    const team = await Team.findOne({ _id: id });
+    const team = await Team.findOne({ _id: id }).sort({ createdAt: -1 });
     if (!team) {
       set.status = 404;
       return "Team not found";
