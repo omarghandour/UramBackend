@@ -252,7 +252,7 @@ const updateTeam = async (body: any, set: any, jwt: any, params: any) => {
 };
 const getNotifications = async (set: any) => {
   try {
-    const Notifications = await Notification.find();
+    const Notifications = await Notification.find().sort({ createdAt: -1 });
     set.status = 200;
     return {
       Notifications: Notifications,
@@ -272,7 +272,7 @@ const UpdeteTeamChallenge = async (
   const challenge = body.challenge;
 
   try {
-    const team = await Team.findOne({ _id: id }).sort({ createdAt: 1 });
+    const team = await Team.findOne({ _id: id });
     if (!team) {
       set.status = 404;
       return "Team not found";
