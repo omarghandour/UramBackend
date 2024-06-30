@@ -347,7 +347,7 @@ const UpdeteTeamJudge = async (body: any, set: any, params: any) => {
   try {
     const team = await Team.findByIdAndUpdate(
       teamId,
-      { judge: judgeId },
+      { $push: { judge: judgeId } },
       { new: true }
     );
     if (!team) {
