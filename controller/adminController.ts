@@ -377,6 +377,8 @@ const teamsByJudge = async (body: any, set: any) => {
     }
     set.status = 200;
     return team;
+    set.status = 200;
+    return team;
   } catch (error: any) {
     set.status = 500;
     return error.message;
