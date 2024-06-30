@@ -435,15 +435,16 @@ const getScore = async (body: any, set: any) => {
 const notificationsById = async (body: any, set: any) => {
   const notifID = body.id;
   try {
-    const notification = await Notification.find({ _id: notifID });
-    console.log(notification);
+    if (notifID !== undefined && notifID !== null && notifID.length > 0) {
+      const notification = await Notification.find({ _id: notifID });
 
-    if (!notification) {
-      set.status = 404;
-      return "Notifications not found";
+      if (!notification) {
+        set.status = 404;
+        return "Notifications not found";
+      }
+      set.status = 200;
+      return notification;
     }
-    set.status = 200;
-    return notification;
   } catch (error: any) {
     set.status = 500;
     return error.message;
