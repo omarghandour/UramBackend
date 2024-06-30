@@ -307,6 +307,40 @@ const getChallenge = async (body: any, set: any) => {
     return error.message;
   }
 };
+const Dashboard = async (params: any, set: any) => {
+  const ChallengeId = params.id;
+  try {
+    const team = await Team.find({ challenge: ChallengeId })
+      .sort({ rating: -1 })
+      .exec();
+    console.log(team);
+    set.status = 200;
+    return team;
+  } catch (error: any) {
+    set.status = 500;
+    return error.message;
+  }
+};
+const addRating = async (params: any, body: any, set: any) => {
+  const teamId = params.id;
+  const rating = body.rating;
+  try {
+    const team = await Team.findByIdAndUpdate(
+      teamId,
+      { rating: rating },
+      { new: true }
+    );
+    if (!team) {
+      set.status = 404;
+      return "Team not found";
+    }
+    set.status = 200;
+    return { message: "Rating added", status: 200 };
+  } catch (error: any) {
+    set.status = 500;
+    return error.message;
+  }
+};
 export {
   registerUser,
   loginUser,
@@ -318,4 +352,6 @@ export {
   getTeams,
   CreateChallenge,
   getChallenge,
+  Dashboard,
+  addRating,
 };

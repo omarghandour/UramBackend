@@ -2,7 +2,9 @@ import Elysia, { t } from "elysia";
 import {
   CreateChallenge,
   CreateNotification,
+  Dashboard,
   addJudge,
+  addRating,
   createTeam,
   getChallenge,
   getJudge,
@@ -155,4 +157,21 @@ Admin.post(
     body: t.Object({
       id: t.String(),
     }),
-  });
+  })
+  .get("dashboard/:ch", ({ params, set }) => Dashboard(params, set), {
+    params: t.Object({
+      ch: t.String(),
+    }),
+  })
+  .patch(
+    "/addRating/:id",
+    ({ params, body, set }) => addRating(params, body, set),
+    {
+      params: t.Object({
+        id: t.String(),
+      }),
+      body: t.Object({
+        rating: t.Number(),
+      }),
+    }
+  );
