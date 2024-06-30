@@ -131,7 +131,7 @@ Admin.post(
     ({ body, set, params }: any) => UpdeteTeamJudge(body, set, params),
     {
       body: t.Object({
-        challenge: t.String(),
+        judgeId: t.String(),
       }),
       params: t.Object({
         id: t.String(),
