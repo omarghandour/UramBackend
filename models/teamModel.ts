@@ -25,7 +25,7 @@ const teamSchema = new mongoose.Schema(
       type: [String],
     },
     challenge: { type: mongoose.Schema.Types.ObjectId, ref: "Challenge" },
-    ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Rating" }],
+    ratings: { type: mongoose.Schema.Types.ObjectId, ref: "Rating" },
     // challenge: {
     //   Name: {
     //     type: String,
