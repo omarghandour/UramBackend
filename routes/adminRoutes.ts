@@ -3,6 +3,7 @@ import {
   CreateChallenge,
   CreateNotification,
   Dashboard,
+  UpdeteTeamJudge,
   addJudge,
   addRating,
   createTeam,
@@ -116,6 +117,18 @@ Admin.post(
     "/updateTeamChallenge/:id",
     ({ body, set, jwt, params }: any) =>
       UpdeteTeamChallenge(body, set, jwt, params),
+    {
+      body: t.Object({
+        challenge: t.String(),
+      }),
+      params: t.Object({
+        id: t.String(),
+      }),
+    }
+  )
+  .patch(
+    "/updateTeamJudge/:id",
+    ({ body, set, params }: any) => UpdeteTeamJudge(body, set, params),
     {
       body: t.Object({
         challenge: t.String(),

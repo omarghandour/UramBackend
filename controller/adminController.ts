@@ -341,6 +341,26 @@ const addRating = async (params: any, body: any, set: any) => {
     return error.message;
   }
 };
+const UpdeteTeamJudge = async (body: any, set: any, params: any) => {
+  const teamId = params.id;
+  const judgeId = body.judgeId;
+  try {
+    const team = await Team.findByIdAndUpdate(
+      teamId,
+      { judge: judgeId },
+      { new: true }
+    );
+    if (!team) {
+      set.status = 404;
+      return "Team not found";
+    }
+    set.status = 200;
+    return { message: "Team leader updated", status: 200 };
+  } catch (error: any) {
+    set.status = 500;
+    return error.message;
+  }
+};
 export {
   registerUser,
   loginUser,
@@ -354,4 +374,5 @@ export {
   getChallenge,
   Dashboard,
   addRating,
+  UpdeteTeamJudge,
 };
