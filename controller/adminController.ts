@@ -2,6 +2,7 @@ import User from "../models/adminModel";
 import Team from "../models/teamModel";
 import Notification from "../models/notification";
 import Challenge from "../models/challengeModel";
+import Rating from "../models/ratingModel";
 // Predefined admin credentials
 const adminUsername = "UramIt";
 const adminPassword = "UramITEG";
@@ -384,6 +385,39 @@ const teamsByJudge = async (body: any, set: any) => {
     return error.message;
   }
 };
+const addScore = async (params: any, body: any, set: any) => {
+  const teamId = params.id;
+  const score = body.score;
+  try {
+    // await Team.updateMany({}, { $addToSet: { ratings: { $each: 0 } } });
+    // if (!team) {
+    //   set.status = 404;
+    //   return "Team not found";
+    // }
+    set.status = 200;
+    return { message: "Score added", status: 200 };
+  } catch (error: any) {
+    set.status = 500;
+    return error.message;
+  }
+};
+const getScore = async (body: any, set: any) => {
+  const teamId = body.id;
+  try {
+    const team = await Team.findById(teamId);
+    if (!team) {
+      set.status = 404;
+      return "Team not found";
+    }
+    const score = await Rating.find({ team: team._id });
+
+    set.status = 200;
+    return score;
+  } catch (error: any) {
+    set.status = 500;
+    return error.message;
+  }
+};
 export {
   registerUser,
   loginUser,
@@ -399,4 +433,6 @@ export {
   addRating,
   UpdeteTeamJudge,
   teamsByJudge,
+  addScore,
+  getScore,
 };

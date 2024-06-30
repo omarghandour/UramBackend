@@ -6,9 +6,11 @@ import {
   UpdeteTeamJudge,
   addJudge,
   addRating,
+  addScore,
   createTeam,
   getChallenge,
   getJudge,
+  getScore,
   getTeams,
   loginJudge,
   loginUser,
@@ -190,6 +192,24 @@ Admin.post(
     }
   )
   .post("/teamsByjudge", ({ body, set }) => teamsByJudge(body, set), {
+    body: t.Object({
+      id: t.String(),
+    }),
+  })
+  .post(
+    "/addScore/:id",
+    ({ params, body, set }) => addScore(params, body, set),
+    {
+      params: t.Object({
+        id: t.String(),
+      }),
+      body: t.Object({
+        score: t.Number(),
+        judgeId: t.String(),
+      }),
+    }
+  )
+  .post("/getScore", ({ body, set }) => getScore(body, set), {
     body: t.Object({
       id: t.String(),
     }),
