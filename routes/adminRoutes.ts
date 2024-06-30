@@ -13,6 +13,7 @@ import {
   loginJudge,
   loginUser,
   registerUser,
+  teamsByJudge,
 } from "../controller/adminController";
 import { adminCheck } from "../middleware/adminProtect";
 import { UpdeteTeamChallenge, updateTeam } from "../controller/userController";
@@ -187,4 +188,9 @@ Admin.post(
         rating: t.Number(),
       }),
     }
-  );
+  )
+  .post("/teamsByjudge", ({ body, set }) => teamsByJudge(body, set), {
+    body: t.Object({
+      id: t.String(),
+    }),
+  });
