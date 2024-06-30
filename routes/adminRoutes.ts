@@ -198,7 +198,7 @@ Admin.post(
   })
   .post(
     "/addScore/:id",
-    ({ params, body, set }) => addScore(params, body, set),
+    ({ params, body, set, jwt }: any) => addScore(params, body, set, jwt),
     {
       params: t.Object({
         id: t.String(),

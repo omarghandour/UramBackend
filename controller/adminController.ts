@@ -385,17 +385,31 @@ const teamsByJudge = async (body: any, set: any) => {
     return error.message;
   }
 };
-const addScore = async (params: any, body: any, set: any) => {
+const addScore = async (params: any, body: any, set: any, jwt: any) => {
+  let stringValue: any = "";
   const teamId = params.id;
-  const score = body.score;
+  const score: any = body.score;
+  const judgeId = body.judgeId;
+  const token = await jwt.verify(judgeId);
+
+  for (const key in token) {
+    if (Object.prototype.hasOwnProperty.call(token, key) && key !== "exp") {
+      stringValue += token[key];
+    }
+  }
+  console.log(stringValue);
+
   try {
-    // await Team.updateMany({}, { $addToSet: { ratings: { $each: 0 } } });
-    // if (!team) {
-    //   set.status = 404;
-    //   return "Team not found";
-    // }
-    set.status = 200;
-    return { message: "Score added", status: 200 };
+    let rating = await Rating.findOne({ team: teamId });
+    if (!rating) {
+      rating = new Rating({ team: teamId, score: score, judge: judgeId });
+    } else {
+      rating.score = score;
+      rating.judge = stringValue;
+      rating.save();
+      set.status = 200;
+      return { message: "Score added", status: 200 };
+    }
   } catch (error: any) {
     set.status = 500;
     return error.message;
