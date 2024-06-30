@@ -14,6 +14,7 @@ import {
   getTeams,
   loginJudge,
   loginUser,
+  notificationsById,
   registerUser,
   teamsByJudge,
 } from "../controller/adminController";
@@ -210,6 +211,11 @@ Admin.post(
     }
   )
   .post("/getScore", ({ body, set }) => getScore(body, set), {
+    body: t.Object({
+      id: t.String(),
+    }),
+  })
+  .post("/notificationsById", ({ body, set }) => notificationsById(body, set), {
     body: t.Object({
       id: t.String(),
     }),

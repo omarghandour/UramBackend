@@ -432,6 +432,23 @@ const getScore = async (body: any, set: any) => {
     return error.message;
   }
 };
+const notificationsById = async (body: any, set: any) => {
+  const notifID = body.id;
+  try {
+    const notification = await Notification.findById(notifID);
+    console.log(notification);
+
+    if (!notification) {
+      set.status = 404;
+      return "Notifications not found";
+    }
+    set.status = 200;
+    return notification;
+  } catch (error: any) {
+    set.status = 500;
+    return error.message;
+  }
+};
 export {
   registerUser,
   loginUser,
@@ -449,4 +466,5 @@ export {
   teamsByJudge,
   addScore,
   getScore,
+  notificationsById,
 };
