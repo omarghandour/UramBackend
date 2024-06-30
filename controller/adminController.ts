@@ -435,7 +435,7 @@ const getScore = async (body: any, set: any) => {
 const notificationsById = async (body: any, set: any) => {
   const notifID = body.id;
   try {
-    const notification = await Notification.find({ _id: notifID });
+    const notification = await Notification.findById(notifID);
     console.log(notification);
 
     if (!notification) {
